@@ -133,28 +133,33 @@ if (loginForm) {
 // the user data by calling addUserDataToDom or checkToken
 if (profileForm) {
   profileForm.addEventListener('submit', async (evt) => {
-    evt.preventDefault();
+    try {
+      evt.preventDefault();
 
-    const token = localStorage.getItem('token');
-    if (!token) {
-      alert('pliis login');
-      return;
+      const token = localStorage.getItem('token');
+      if (!token) {
+        alert('pliis login');
+        return;
+      }
+
+      if (!profileUsernameInput || !profileEmailInput) {
+        throw new Error('Näitäkään elementtei ei oo');
+      }
+
+      const username = profileUsernameInput.value;
+      const email = profileEmailInput.value;
+
+      const data = {
+        username,
+        email,
+      };
+
+      const userResponse = await updateUserData(data, token);
+      addUserDataToDom(userResponse.data);
+      alert('update OK');
+    } catch (error) {
+      console.log((error as Error).message);
     }
-
-    if (!profileUsernameInput || !profileEmailInput) {
-      throw new Error('Näitäkään elementtei ei oo');
-    }
-
-    const username = profileUsernameInput.value;
-    const email = profileEmailInput.value;
-
-    const data = {
-      username,
-      email,
-    };
-
-    const userResponse = await updateUserData(data, token);
-    addUserDataToDom(userResponse.data);
   });
 }
 
