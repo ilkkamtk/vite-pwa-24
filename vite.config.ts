@@ -8,7 +8,6 @@ export default defineConfig({
       registerType: 'autoUpdate',
       devOptions: {
         enabled: true,
-        type: 'module',
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,ttf}'],
