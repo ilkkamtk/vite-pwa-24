@@ -43,6 +43,18 @@ const avatarTarget = document.querySelector(
   '#avatar-target'
 ) as HTMLImageElement | null;
 
+// logout button
+const logoutButton = document.querySelector('#logout');
+logoutButton?.addEventListener('click', () => {
+  localStorage.removeItem('token');
+  if (!emailTarget || !usernameTarget || !avatarTarget) {
+    return;
+  }
+  emailTarget.innerText = '';
+  usernameTarget.innerText = '';
+  avatarTarget.src = '';
+});
+
 // function to login
 const login = async (): Promise<LoginUser> => {
   if (!passwordInput || !usernameInput) {
@@ -98,11 +110,26 @@ const addUserDataToDom = (user: User): void => {
 };
 
 // function to get userdata from API using token
-// const getUserData = async (token: string): Promise<User> => {};
+const getUserData = async (token: string): Promise<User> => {
+  const options: RequestInit = {
+    headers: {
+      Authorization: 'Bearer ' + token,
+    },
+  };
+  return await fetchData<User>(apiUrl + '/users/token', options);
+};
 
-// TODO: function to check local storage for token and if it exists fetch
+// function to check local storage for token and if it exists fetch
 // userdata with getUserData then update the DOM with addUserDataToDom
-const checkToken = async (): Promise<void> => {};
+const checkToken = async (): Promise<void> => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.log('nou touken');
+    return;
+  }
+  const user = await getUserData(token);
+  addUserDataToDom(user);
+};
 
 // call checkToken on page load to check if token exists and update the DOM
 checkToken();
