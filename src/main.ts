@@ -47,12 +47,14 @@ const avatarTarget = document.querySelector(
 const logoutButton = document.querySelector('#logout');
 logoutButton?.addEventListener('click', () => {
   localStorage.removeItem('token');
-  if (!emailTarget || !usernameTarget || !avatarTarget) {
-    return;
-  }
-  emailTarget.innerText = '';
-  usernameTarget.innerText = '';
-  avatarTarget.src = '';
+  // if (!emailTarget || !usernameTarget || !avatarTarget) {
+  //   return;
+  // }
+  // emailTarget.innerText = '';
+  // usernameTarget.innerText = '';
+  // avatarTarget.src = '';
+  // tai
+  location.href = './';
 });
 
 // function to login
